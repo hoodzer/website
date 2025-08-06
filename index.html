@@ -35,6 +35,11 @@
       color: red;
       margin-top: 15px;
     }
+    .counter {
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #888;
+    }
   </style>
 </head>
 <body>
@@ -43,6 +48,7 @@
   <input type="password" id="pw" placeholder="Passwort">
   <button onclick="check()">Absenden</button>
   <div class="error" id="err"></div>
+  <div class="counter">Erfolgreiche Zugriffe: <span id="counter">...</span></div>
 
   <script>
     async function check() {
@@ -50,17 +56,27 @@
       const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
       const hex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-      // Hier SHA-256 Hash deines Passworts eintragen:
       const valid = "5bea8750614d3661fd6d8ecf7f15ea3461b2f53f2c0cdfe5fc2f0d3c0812956a";
 
       if (hex === valid) {
+        // Click-Counter erhöhen
+        fetch("https://api.countapi.xyz/hit/geheimprojekt123/eingeloggt");
+        // Weiterleitung
         window.location.href = "https://linkly.link/2CfL2";
       } else {
         document.getElementById("err").textContent = "Zugang verweigert.";
       }
     }
+
+    // Counter-Wert anzeigen
+    fetch("https://api.countapi.xyz/get/geheimprojekt123/eingeloggt")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("counter").textContent = data.value;
+      })
+      .catch(() => {
+        document.getElementById("counter").textContent = "unbekannt";
+      });
   </script>
 </body>
 </html>
-
-
