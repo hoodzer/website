@@ -48,9 +48,22 @@
   <input type="password" id="pw" placeholder="Passwort">
   <button onclick="check()">Absenden</button>
   <div class="error" id="err"></div>
-  <div class="counter">Erfolgreiche Zugriffe: <span id="counter">...</span></div>
+  <div class="counter">Besucher insgesamt: <span id="counter">...</span></div>
 
   <script>
+    const counterKey = "eingeloggt";
+    const apiKey = "ut_ySsVqHqRzwaUZe1k1aJ33KTEjxPPoqUaTtcc3oJL";
+
+    // Zähler direkt bei Seitenaufruf erhöhen und anzeigen
+    fetch(`https://counterapi.dev/api/increment?key=${counterKey}&apiKey=${apiKey}`)
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("counter").textContent = data.value;
+      })
+      .catch(() => {
+        document.getElementById("counter").textContent = "unbekannt";
+      });
+
     async function check() {
       const input = document.getElementById('pw').value;
       const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
@@ -59,24 +72,11 @@
       const valid = "5bea8750614d3661fd6d8ecf7f15ea3461b2f53f2c0cdfe5fc2f0d3c0812956a";
 
       if (hex === valid) {
-        // Click-Counter erhöhen
-        fetch("https://api.countapi.xyz/hit/geheimprojekt123/eingeloggt");
-        // Weiterleitung
         window.location.href = "https://linkly.link/2CfL2";
       } else {
         document.getElementById("err").textContent = "Zugang verweigert.";
       }
     }
-
-    // Counter-Wert anzeigen
-    fetch("https://api.countapi.xyz/get/geheimprojekt123/eingeloggt")
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("counter").textContent = data.value;
-      })
-      .catch(() => {
-        document.getElementById("counter").textContent = "unbekannt";
-      });
   </script>
 </body>
 </html>
