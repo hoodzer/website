@@ -52,10 +52,9 @@
 
   <script>
     const counterKey = "eingeloggt";
-    const apiKey = "ut_ySsVqHqRzwaUZe1k1aJ33KTEjxPPoqUaTtcc3oJL";
 
-    // Zähler direkt bei Seitenaufruf erhöhen und anzeigen
-    fetch(`https://counterapi.dev/api/increment?key=${counterKey}&apiKey=${apiKey}`)
+    // Zähler direkt bei Seitenaufruf erhöhen und anzeigen (kein API-Key nötig)
+    fetch(`https://counterapi.dev/api/increment?key=${counterKey}`)
       .then(res => res.json())
       .then(data => {
         document.getElementById("counter").textContent = data.value;
