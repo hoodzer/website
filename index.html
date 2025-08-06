@@ -51,18 +51,34 @@
   <div class="counter">Besucher insgesamt: <span id="counter">...</span></div>
 
   <script>
-    const counterKey = "eingeloggt";
+    const counterURL = "https://api.counterapi.dev/v2/geheimprojekt123/geheimprojekt123";
+    const apiKey = "ut_ySsVqHqRzwaUZe1k1aJ33KTEjxPPoqUaTtcc3oJL";
 
-    // Zähler direkt bei Seitenaufruf erhöhen und anzeigen (kein API-Key nötig)
-    fetch(`https://counterapi.dev/api/increment?key=${counterKey}`)
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("counter").textContent = data.value;
-      })
-      .catch(() => {
-        document.getElementById("counter").textContent = "unbekannt";
+    // Zähler hochzählen und Wert anzeigen
+    fetch(`${counterURL}/up`, {
+      headers: {
+        "Authorization": `Bearer ${apiKey}`
+      }
+    })
+    .then(r => r.json())
+    .then(() => {
+      // danach aktuellen Wert abfragen
+      return fetch(counterURL, {
+        headers: {
+          "Authorization": `Bearer ${apiKey}`
+        }
       });
+    })
+    .then(r => r.json())
+    .then(data => {
+      const value = data?.data?.value ?? "unbekannt";
+      document.getElementById("counter").textContent = value;
+    })
+    .catch(() => {
+      document.getElementById("counter").textContent = "unbekannt";
+    });
 
+    // Passwortprüfung
     async function check() {
       const input = document.getElementById('pw').value;
       const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
