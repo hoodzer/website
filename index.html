@@ -48,37 +48,16 @@
   <input type="password" id="pw" placeholder="Passwort">
   <button onclick="check()">Absenden</button>
   <div class="error" id="err"></div>
-  <div class="counter">Besucher insgesamt: <span id="counter">...</span></div>
+
+  <div class="counter">
+    Besucher insgesamt:<br>
+    <a href="https://www.hitwebcounter.com" target="_blank">
+      <img src="https://hitwebcounter.com/counter/counter.php?page=21333041&style=0036&nbdigits=4&type=page&initCount=0" 
+           title="Counter Widget" alt="Besucherzähler" border="0" />
+    </a>
+  </div>
 
   <script>
-    const counterURL = "https://api.counterapi.dev/v2/geheimprojekt123/geheimprojekt123";
-    const apiKey = "ut_ySsVqHqRzwaUZe1k1aJ33KTEjxPPoqUaTtcc3oJL";
-
-    // Zähler hochzählen und Wert anzeigen
-    fetch(`${counterURL}/up`, {
-      headers: {
-        "Authorization": `Bearer ${apiKey}`
-      }
-    })
-    .then(r => r.json())
-    .then(() => {
-      // danach aktuellen Wert abfragen
-      return fetch(counterURL, {
-        headers: {
-          "Authorization": `Bearer ${apiKey}`
-        }
-      });
-    })
-    .then(r => r.json())
-    .then(data => {
-      const value = data?.data?.value ?? "unbekannt";
-      document.getElementById("counter").textContent = value;
-    })
-    .catch(() => {
-      document.getElementById("counter").textContent = "unbekannt";
-    });
-
-    // Passwortprüfung
     async function check() {
       const input = document.getElementById('pw').value;
       const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
