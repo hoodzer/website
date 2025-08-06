@@ -1,29 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro Video Game Fan</title>
-    <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: 'Press Start 2P', cursive;
-            text-align: center;
-        }
-        h1 {
-            font-size: 2em;
-            color: red;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Zugang</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    input[type="password"] {
+      padding: 10px;
+      font-size: 1em;
+      margin-top: 10px;
+      background: #111;
+      color: #fff;
+      border: 1px solid #333;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-top: 15px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Hoodzer sagt</h1>
-    <img src="hoodzersagt.jpg" alt="Hoodzer sagt">
-    <p>Kevnox stinkt</p>
-<!-- hitwebcounter Code START -->
-<a href="https://www.hitwebcounter.com" target="_blank">
-<img src="https://hitwebcounter.com/counter/counter.php?page=13788422&style=0032&nbdigits=4&type=page&initCount=0" title="Counter Widget" Alt="Visit counter For Websites"   border="0" /></a>
+  <h2>Wer bist du?</h2>
+  <p>Warst du brav oder ...?</p>
+  <input type="password" id="pw" placeholder="Passwort">
+  <button onclick="check()">Absenden</button>
+  <div class="error" id="err"></div>
+
+  <script>
+    async function check() {
+      const input = document.getElementById('pw').value;
+      const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
+      const hex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+      // Hier SHA-256 Hash deines Passworts eintragen:
+      const valid = "5bea8750614d3661fd6d8ecf7f15ea3461b2f53f2c0cdfe5fc2f0d3c0812956a";
+
+      if (hex === valid) {
+        window.location.href = "https://deine-zielseite.com";
+      } else {
+        document.getElementById("err").textContent = "Zugang verweigert.";
+      }
+    }
+  </script>
 </body>
 </html>
