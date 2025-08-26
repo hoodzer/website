@@ -58,14 +58,17 @@
   </div>
 
   <script>
+    const validHashes = [
+      "5bea8750614d3661fd6d8ecf7f15ea3461b2f53f2c0cdfe5fc2f0d3c0812956a", // Passwort #1
+      "879f70e99ca634703390d6f4fffdf8fc722bcd6293b334cce529caaef25a6634"  // Passwort #2
+    ];
+
     async function check() {
       const input = document.getElementById('pw').value;
       const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
       const hex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-      const valid = "5bea8750614d3661fd6d8ecf7f15ea3461b2f53f2c0cdfe5fc2f0d3c0812956a";
-
-      if (hex === valid) {
+      if (validHashes.includes(hex)) {
         window.location.href = "https://linkly.link/2CfL2";
       } else {
         document.getElementById("err").textContent = "Zugang verweigert.";
